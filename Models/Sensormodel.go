@@ -1,24 +1,21 @@
 package Models
 
-// SensorDataSet{
-// id:id,
-// startTime='11:28:37 AM',
-// endTime='11:30:18 AM',
-// calorieData=CalorieData{
-// calories=2.0427833},
-// }
+import "go.mongodb.org/mongo-driver/bson/primitive"
+
 
 // representing the shared values that each sensor will have
 type CommonSensorData struct {
-	id string `json:"id"`
-	starttime string `json:"starttime:"`
-	endtime string `json:"endtime"`
+	ID primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
+	StartTime string `json:"starttime,omitempty" bson:"starttime,omitempty"`
+	EndTime string `json:"endtime,omitempty" bson:"endtime,omitempty"`
 }
 
 // structure of activity sensor data
 type ActivitySensorData struct {
 	CommonSensorData
-	activity int `json:"activity"`
-	duration float32 `json:"duration"`
+	Activity int `json:"activity,omitempty" bson:"activity,omitempty"`
+	Duration float32 `json:"duration,omitempty" bson:"duration,omitempty"`
 }
+
+
 
