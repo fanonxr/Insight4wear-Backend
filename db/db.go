@@ -1,4 +1,4 @@
-package config
+package db
 
 import (
 	"context"
@@ -22,7 +22,7 @@ type DBConfig struct {
 
 
 func BuildMongoConnection()  {
-	// Database config
+	// Database db
 	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
 	client, err := mongo.NewClient(clientOptions)
 
