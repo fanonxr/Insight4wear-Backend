@@ -1,12 +1,13 @@
-package Config
+package config
 
 import (
 	"context"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
-	"insight4wear-backend/Controllers"
+	"insight4wear-backend/controllers"
 	"log"
+	"os"
 	"time"
 )
 
@@ -37,18 +38,18 @@ func BuildMongoConnection()  {
 	// close connection when completed
 	defer cancel()
 
-	// ping our dbconnection
+	// ping our db connection
 	err = client.Ping(context.Background(), readpref.Primary())
 
 	if err != nil {
 		log.Fatal("Failed to establish connection to the database", err)
 	} else {
-		log.Println("Connected to the database!")
+		log.Println("Successfully connected to the database!")
 	}
 
 	// create the database
-	db := client.Database("insight4wear")
+	db := client.Database(os.Getenv("DATABASE_NAME"))
 
 	// create the collections for the database TODO: do it for all sensors/data
-	Controllers.ActivityCollection(db)
+	controllers.ActivityCollection(db)
 }
