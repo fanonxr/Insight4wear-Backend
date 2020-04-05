@@ -1,11 +1,11 @@
-package Controllers
+package controllers
 
 import (
 	"context"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"insight4wear-backend/Models"
+	"insight4wear-backend/models"
 	"log"
 	"net/http"
 )
@@ -19,7 +19,9 @@ func ActivityCollection(c *mongo.Database) {
 }
 
 func GetAllActivityData(c *gin.Context) {
-	var data []Models.ActivitySensorData
+	var data []models.ActivitySensorData
+
+	c.BindJSON(&data)
 
 	cursor, err := collection.Find(context.TODO(), bson.M{})
 
@@ -33,27 +35,32 @@ func GetAllActivityData(c *gin.Context) {
 
 	// iterate through the returned cursor
 	for cursor.Next(context.TODO()) {
-		var activityData Models.ActivitySensorData
+		var activityData models.ActivitySensorData
 		cursor.Decode(&activityData)
-		data = append(data, activityData) // add the activity data to the list
+		// add the activity data to the list
+		data = append(data, activityData)
 	}
+	// Bind the retrieve data from the request
+	c.JSON(http.StatusOK, gin.H{
+		"status": http.StatusOK,
+		"message": "Activity Data successfully fetched",
+		"data": data,
+	})
 }
 
 // method to create a activity data within mongodb
 func CreateActivityData(c *gin.Context) {
-	var data Models.ActivitySensorData
+	var data models.ActivitySensorData
 
 	c.BindJSON(&data)
 
-	// get all data out of object
-	// id := uuid.Must(uuid.NewV4())
 	duration := data.Duration
 	activity := data.Activity
 	startTime := data.StartTime
 	endTime := data.EndTime
 
-	buildActivityData := Models.ActivitySensorData{
-		CommonSensorData: Models.CommonSensorData{
+	buildActivityData := models.ActivitySensorData{
+		TimeStamp: models.TimeStamp{
 			StartTime: startTime,
 			EndTime: endTime,
 		},
@@ -82,7 +89,7 @@ func CreateActivityData(c *gin.Context) {
 func GetSingleActivityData(c *gin.Context) {
 	todoId := c.Param("todoId")
 
-	data := Models.ActivitySensorData{}
+	data := models.ActivitySensorData{}
 	err := collection.FindOne(context.TODO(), bson.M{"id": todoId}).Decode(&data)
 	if err != nil {
 		log.Printf("Error while getting a single da, Reason: %v\n", err)
@@ -102,10 +109,11 @@ func GetSingleActivityData(c *gin.Context) {
 }
 
 // method to delete a single activity ids
-func DeleteTodo(c *gin.Context) {
+func DeleteActivityData(c *gin.Context) {
 	dataId := c.Param("id")
 
 	_, err := collection.DeleteOne(context.TODO(), bson.M{"id": dataId})
+
 	if err != nil {
 		log.Printf("Error while deleting a single Activity, Reason: %v\n", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -117,7 +125,7 @@ func DeleteTodo(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"status":  http.StatusOK,
-		"message": "Todo deleted successfully",
+		"message": "Activity Data deleted successfully",
 	})
 	return
 }
