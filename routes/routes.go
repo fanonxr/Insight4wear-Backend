@@ -1,24 +1,35 @@
-package Routes
+package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"insight4wear-backend/Controllers"
+	"insight4wear-backend/controllers"
 	"net/http"
 )
 
-// function to setup Routes for the REST API
+// function to setup routes for the REST API
 func SetupRouter() *gin.Engine {
+	// create router with Gin
 	router := gin.Default()
-	appApi := router.Group("/app")
-	{
-		// TODO: Add other sensor Routes once route for this is working
-		appApi.GET("sensor") // Route to display all sensor data
+	// Handle welcome route
+	router.GET("/", welcome)
 
-		appApi.GET("sensor/activity", Controllers.GetAllActivityData) // route to display the activity sensor data
-		appApi.GET("sensor/activity/:id", Controllers.GetSingleActivityData) // route to display the 1 specific activity data
-		appApi.POST("sensor/activity/:id", Controllers.CreateActivityData) // route to post the activity data
-		appApi.DELETE("sensor/activity", Controllers.DeleteTodo) // route to delete the activity data
+	v1 := router.Group("/api/v1")
+	{
+		// TODO: Add other sensor routes once route for this is working
+		v1.GET("sensor") // Route to display all sensor data
+
+		v1.GET("sensor/activity", controllers.GetAllActivityData)    // route to display the activity sensor data
+		v1.POST("sensor/activity", controllers.CreateActivityData)   // route to post the activity data
+		v1.DELETE("sensor/activity", controllers.DeleteActivityData) // route to delete the activity data
 	}
+
+	// Handle error response when a route is not defined
+	router.NoRoute(func(c *gin.Context) {
+		c.JSON(404, gin.H{
+			"status":  404,
+			"message": "Route Not Found",
+		})
+	})
 
 	return router
 }
@@ -31,13 +42,6 @@ func welcome(c *gin.Context) {
 	return
 }
 
-func notFound(c *gin.Context) {
-	c.JSON(http.StatusNotFound, gin.H{
-		"status":  404,
-		"message": "Route Not Found",
-	})
-	return
-}
 
 
 
