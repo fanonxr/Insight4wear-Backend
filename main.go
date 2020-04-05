@@ -1,16 +1,25 @@
 package main
 
 import (
-	"insight4wear-backend/Config"
-	"insight4wear-backend/Routes"
+	"github.com/joho/godotenv"
+	"insight4wear-backend/db"
+	"insight4wear-backend/routes"
+	"log"
 )
+
+func init() {
+	// Log error if there is no .env file
+	if err := godotenv.Load(); err != nil {
+		log.Printf("No .env file exists")
+	}
+}
 
 func main()  {
 	// start mongo configuration
-	Config.BuildMongoConnection()
+	db.BuildMongoConnection()
 
 	// set up routes
-	router := Routes.SetupRouter()
+	router := routes.SetupRouter()
 
 	router.Run()
 
