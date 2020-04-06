@@ -15,12 +15,32 @@ func SetupRouter() *gin.Engine {
 
 	v1 := router.Group("/api/v1")
 	{
-		// TODO: Add other sensor routes once route for this is working
 		v1.GET("sensor") // Route to display all sensor data
 
-		v1.GET("sensor/activity", controllers.GetAllActivityData)    // route to display the activity sensor data
-		v1.POST("sensor/activity", controllers.CreateActivityData)   // route to post the activity data
-		v1.DELETE("sensor/activity", controllers.DeleteActivityData) // route to delete the activity data
+		// routes for activity data
+		v1.GET("sensor/activity", controllers.GetAllActivityData)
+		v1.POST("sensor/activity", controllers.CreateActivityData)
+		v1.DELETE("sensor/activity", controllers.DeleteActivityData)
+
+		// routes for calorie data
+		v1.GET("sensor/calorie", controllers.GetAllCalorieData)
+		v1.POST("sensor/calorie", controllers.CreateCalorieData)
+		v1.DELETE("sensor/calorie", controllers.DeleteCalorieData)
+
+		// routes for Heart data
+		v1.GET("sensor/heart", controllers.GetAllHeartData)
+		v1.POST("sensor/heart", controllers.CreateHeartData)
+		v1.DELETE("sensor/heart", controllers.DeleteHeartData)
+
+		// routes for Power data
+		v1.GET("sensor/power", controllers.GetAllPowerData)
+		v1.POST("sensor/power", controllers.CreatePowerData)
+		v1.DELETE("sensor/power", controllers.DeletePowerData)
+
+		// routes for Step Data
+		v1.GET("sensor/steps", controllers.GetAllStepData)
+		v1.POST("sensor/steps", controllers.CreateStepData)
+		v1.DELETE("sensor/steps", controllers.DeleteStepData)
 	}
 
 	// Handle error response when a route is not defined

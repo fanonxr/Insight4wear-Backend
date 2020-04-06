@@ -10,6 +10,9 @@ import (
 	"net/http"
 )
 
+// struct to to handle database operations
+type ActivityController struct {}
+
 // collection for the db
 var collection *mongo.Collection
 
