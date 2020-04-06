@@ -1,0 +1,17 @@
+// testing for each sensor and REST API EndPoint
+
+// Step sensor
+curl -d '{"starttime": "Aug 13 2018", "endtime": "Oct 4 2018", "step_count_delta": 34.33}' -H "Content-Type: application/json" -X POST http://localhost:8080/api/v1/sensor/steps
+
+// Power
+curl -d '{"starttime": "Aug 13 2018", "endtime": "Oct 4 2018", "watts": 34.33}' -H "Content-Type: application/json" -X POST http://localhost:8080/api/v1/sensor/power
+
+// Heart
+curl -d '{"starttime": "Aug 13 2018", "endtime": "Oct 4 2018", "bpm": 34.33}' -H "Content-Type: application/json" -X POST http://localhost:8080/api/v1/sensor/heart
+
+// Calorie
+curl -d '{"starttime": "Aug 17 2018", "endtime": "Oct 7 2018", "calories": 673.84}' -H "Content-Type: application/json" -X POST http://localhost:8080/api/v1/sensor/calorie
+
+// Activity
+curl -d '{"starttime": "Aug 17 2018", "endtime": "Oct 7 2018", "activity": 12, "duration": 78.54}' -H "Content-Type: application/json" -X POST http://localhost:8080/api/v1/sensor/activity
+
