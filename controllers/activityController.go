@@ -13,12 +13,9 @@ import (
 // struct to to handle database operations
 type ActivityController struct {}
 
-// collection for the db
-var collection *mongo.Collection
-
 // functions to create collections for each sensor
 func ActivityCollection(c *mongo.Database) {
-	collection = c.Collection("ActivityData")
+	activityCollection = c.Collection("ActivityData")
 }
 
 func GetAllActivityData(c *gin.Context) {
@@ -26,7 +23,7 @@ func GetAllActivityData(c *gin.Context) {
 
 	c.BindJSON(&data)
 
-	cursor, err := collection.Find(context.TODO(), bson.M{})
+	cursor, err := activityCollection.Find(context.TODO(), bson.M{})
 
 	if err != nil {
 		log.Printf("Error while fetching all Activity sensor data, Error: %v\n", err)
@@ -46,8 +43,8 @@ func GetAllActivityData(c *gin.Context) {
 	// Bind the retrieve data from the request
 	c.JSON(http.StatusOK, gin.H{
 		"status": http.StatusOK,
-		"message": "Activity Data successfully fetched",
 		"data": data,
+		"message": "Successfully retrieved all Activity data",
 	})
 }
 
@@ -71,7 +68,7 @@ func CreateActivityData(c *gin.Context) {
 		Duration:         duration,
 	}
 
-	_, err := collection.InsertOne(context.TODO(), buildActivityData)
+	_, err := activityCollection.InsertOne(context.TODO(), buildActivityData)
 
 	if err != nil {
 		log.Printf("Error while inserting activity data into the db, Error: %v\n", err)
@@ -84,6 +81,7 @@ func CreateActivityData(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{
 		"status": http.StatusCreated,
 		"message": "Activity Data created successfully",
+		"data": buildActivityData,
 	})
 
 }
@@ -93,7 +91,7 @@ func GetSingleActivityData(c *gin.Context) {
 	todoId := c.Param("todoId")
 
 	data := models.ActivitySensorData{}
-	err := collection.FindOne(context.TODO(), bson.M{"id": todoId}).Decode(&data)
+	err := activityCollection.FindOne(context.TODO(), bson.M{"id": todoId}).Decode(&data)
 	if err != nil {
 		log.Printf("Error while getting a single da, Reason: %v\n", err)
 		c.JSON(http.StatusNotFound, gin.H{
@@ -115,7 +113,7 @@ func GetSingleActivityData(c *gin.Context) {
 func DeleteActivityData(c *gin.Context) {
 	dataId := c.Param("id")
 
-	_, err := collection.DeleteOne(context.TODO(), bson.M{"id": dataId})
+	_, err := activityCollection.DeleteOne(context.TODO(), bson.M{"id": dataId})
 
 	if err != nil {
 		log.Printf("Error while deleting a single Activity, Reason: %v\n", err)
