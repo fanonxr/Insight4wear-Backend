@@ -20,7 +20,6 @@ type DBConfig struct {
 	Password string
 }
 
-
 func BuildMongoConnection()  {
 	// Database db
 	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
@@ -52,4 +51,8 @@ func BuildMongoConnection()  {
 
 	// create the collections for the database TODO: do it for all sensors/data
 	controllers.ActivityCollection(db)
+	controllers.CalorieCollection(db)
+	controllers.HeartCollection(db)
+	controllers.PowerCollection(db)
+	controllers.StepCollection(db)
 }
