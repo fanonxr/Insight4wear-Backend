@@ -5,6 +5,7 @@ import (
 	"insight4wear-backend/db"
 	"insight4wear-backend/routes"
 	"log"
+	"os"
 )
 
 func init() {
@@ -21,7 +22,8 @@ func main()  {
 	// set up routes
 	router := routes.SetupRouter()
 
-	router.Run()
-
+	// Set up HTTPs server
+	router.RunTLS(os.Getenv("PORT"), os.Getenv("CERT_FILE"), os.Getenv("KEY_FILE"))
+	// router.Run(os.Getenv("PORT"))
 
 }
