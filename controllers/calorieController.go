@@ -31,6 +31,7 @@ func GetAllCalorieData(c *gin.Context) {
 			"status": http.StatusInternalServerError,
 			"message": "Something went wrong",
 		})
+		return
 	}
 
 	// iterate through the returned cursor
@@ -45,6 +46,7 @@ func GetAllCalorieData(c *gin.Context) {
 		"status": http.StatusOK,
 		"data": data,
 	})
+	return
 }
 
 // method to create a activity data within mongodb
@@ -73,6 +75,7 @@ func CreateCalorieData(c *gin.Context) {
 			"status":  http.StatusInternalServerError,
 			"message": "Something went wrong",
 		})
+		return
 	}
 
 	c.JSON(http.StatusCreated, gin.H{
@@ -80,6 +83,7 @@ func CreateCalorieData(c *gin.Context) {
 		"message": "Calorie Data created successfully",
 		"data": buildCalorieData,
 	})
+	return
 }
 
 // method to delete a single activity ids

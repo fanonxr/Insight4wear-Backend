@@ -73,6 +73,7 @@ func CreateStepData(c *gin.Context) {
 			"status":  http.StatusInternalServerError,
 			"message": "Something went wrong",
 		})
+		return
 	}
 
 	c.JSON(http.StatusCreated, gin.H{
@@ -80,6 +81,7 @@ func CreateStepData(c *gin.Context) {
 		"message": "Step Data created successfully",
 		"data": buildStepData,
 	})
+	return
 
 }
 

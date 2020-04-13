@@ -31,6 +31,7 @@ func GetAllPowerData(c *gin.Context) {
 			"status": http.StatusInternalServerError,
 			"message": "Something went wrong",
 		})
+		return
 	}
 
 	// iterate through the returned cursor
@@ -46,6 +47,7 @@ func GetAllPowerData(c *gin.Context) {
 		"message": "Power Data created successfully",
 		"data": data,
 	})
+	return
 }
 
 // method to create a activity data within mongodb
@@ -74,12 +76,15 @@ func CreatePowerData(c *gin.Context) {
 			"status":  http.StatusInternalServerError,
 			"message": "Something went wrong",
 		})
+		return
 	}
 
 	c.JSON(http.StatusCreated, gin.H{
 		"status":       http.StatusCreated,
+		"message": "Power dara successfully created",
 		"data": buildPowerData,
 	})
+	return
 }
 
 // method to delete a single activity ids

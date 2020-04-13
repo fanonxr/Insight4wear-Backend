@@ -31,6 +31,7 @@ func GetAllActivityData(c *gin.Context) {
 			"status": http.StatusInternalServerError,
 			"message": "Something went wrong",
 		})
+		return
 	}
 
 	// iterate through the returned cursor
@@ -46,6 +47,7 @@ func GetAllActivityData(c *gin.Context) {
 		"data": data,
 		"message": "Successfully retrieved all Activity data",
 	})
+	return
 }
 
 // method to create a activity data within mongodb
@@ -76,6 +78,7 @@ func CreateActivityData(c *gin.Context) {
 			"status":  http.StatusInternalServerError,
 			"message": "Something went wrong",
 		})
+		return
 	}
 
 	c.JSON(http.StatusCreated, gin.H{
@@ -83,6 +86,7 @@ func CreateActivityData(c *gin.Context) {
 		"message": "Activity Data created successfully",
 		"data": buildActivityData,
 	})
+	return
 
 }
 

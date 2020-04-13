@@ -31,6 +31,7 @@ func GetAllHeartData(c *gin.Context) {
 			"status": http.StatusInternalServerError,
 			"message": "Something went wrong",
 		})
+		return
 	}
 
 	// iterate through the returned cursor
@@ -46,6 +47,7 @@ func GetAllHeartData(c *gin.Context) {
 		"message": "Heart Data created successfully",
 		"data": data,
 	})
+	return
 }
 
 // method to create a activity data within mongodb
@@ -74,12 +76,15 @@ func CreateHeartData(c *gin.Context) {
 			"status":  http.StatusInternalServerError,
 			"message": "Something went wrong",
 		})
+		return
 	}
 
 	c.JSON(http.StatusCreated, gin.H{
 		"status":       http.StatusCreated,
+		"message": "Heart data succesfully created",
 		"data": buildHeartData,
 	})
+	return
 }
 
 // method to delete a single activity ids
