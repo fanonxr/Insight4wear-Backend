@@ -54,11 +54,11 @@ func CreateStepData(c *gin.Context) {
 	c.BindJSON(&data)
 
 	stepCountDeleta := data.StepCountDelta
-	startTime := data.StartTime
-	endTime := data.EndTime
+	startTime := data.Timestamp.StartTime
+	endTime := data.Timestamp.EndTime
 
 	buildStepData := models.StepSensorData{
-		TimeStamp: models.TimeStamp{
+		Timestamp: models.TimeStamp{
 			StartTime: startTime,
 			EndTime: endTime,
 		},

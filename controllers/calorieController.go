@@ -11,7 +11,7 @@ import (
 )
 
 // struct to to handle database operations
-type CalorieController struct {}
+type CalorieController struct{}
 
 // functions to create collections for each sensor
 func CalorieCollection(c *mongo.Database) {
@@ -28,7 +28,7 @@ func GetAllCalorieData(c *gin.Context) {
 	if err != nil {
 		log.Printf("Error while fetching all Calorie sensor data, Error: %v\n", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"status": http.StatusInternalServerError,
+			"status":  http.StatusInternalServerError,
 			"message": "Something went wrong",
 		})
 		return
@@ -44,7 +44,7 @@ func GetAllCalorieData(c *gin.Context) {
 	// Bind the retrieve data from the request
 	c.JSON(http.StatusOK, gin.H{
 		"status": http.StatusOK,
-		"data": data,
+		"data":   data,
 	})
 	return
 }
@@ -52,23 +52,26 @@ func GetAllCalorieData(c *gin.Context) {
 // method to create a activity data within mongodb
 func CreateCalorieData(c *gin.Context) {
 	var data models.CalorieSensorData
-
+	// bind the data we get from the request as json
 	c.BindJSON(&data)
 
+	// get the data from the bind json
 	calories := data.Calories
-	startTime := data.StartTime
-	endTime := data.EndTime
+	startTime := data.Timestamp.StartTime
+	endTime := data.Timestamp.EndTime
 
 	buildCalorieData := models.CalorieSensorData{
-		TimeStamp: models.TimeStamp{
+		Timestamp: models.TimeStamp{
 			StartTime: startTime,
-			EndTime: endTime,
+			EndTime:   endTime,
 		},
 		Calories: calories,
 	}
 
+	// insert the created document into the database
 	_, err := calorieCollection.InsertOne(context.TODO(), buildCalorieData)
 
+	// check if there was an error inserting the data
 	if err != nil {
 		log.Printf("Error while inserting Calorie data into the db, Error: %v\n", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -78,10 +81,11 @@ func CreateCalorieData(c *gin.Context) {
 		return
 	}
 
+	// bind the data as a successfully response
 	c.JSON(http.StatusCreated, gin.H{
-		"status":       http.StatusCreated,
+		"status":  http.StatusCreated,
 		"message": "Calorie Data created successfully",
-		"data": buildCalorieData,
+		"data":    buildCalorieData,
 	})
 	return
 }

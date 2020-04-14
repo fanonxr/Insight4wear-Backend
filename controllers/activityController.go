@@ -58,13 +58,13 @@ func CreateActivityData(c *gin.Context) {
 
 	duration := data.Duration
 	activity := data.Activity
-	startTime := data.StartTime
-	endTime := data.EndTime
+	startTime := data.Timestamp.StartTime
+	endTime := data.Timestamp.EndTime
 
 	buildActivityData := models.ActivitySensorData{
-		TimeStamp: models.TimeStamp{
+		Timestamp: models.TimeStamp{
 			StartTime: startTime,
-			EndTime: endTime,
+			EndTime:   endTime,
 		},
 		Activity:         activity,
 		Duration:         duration,

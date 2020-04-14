@@ -57,11 +57,11 @@ func CreatePowerData(c *gin.Context) {
 	c.BindJSON(&data)
 
 	watts := data.Watts
-	startTime := data.StartTime
-	endTime := data.EndTime
+	startTime := data.Timestamp.StartTime
+	endTime := data.Timestamp.EndTime
 
 	buildPowerData := models.PowerSensorData{
-		TimeStamp: models.TimeStamp{
+		Timestamp: models.TimeStamp{
 			StartTime: startTime,
 			EndTime: endTime,
 		},

@@ -57,11 +57,11 @@ func CreateHeartData(c *gin.Context) {
 	c.BindJSON(&data)
 
 	BPM := data.BPM
-	startTime := data.StartTime
-	endTime := data.EndTime
+	startTime := data.Timestamp.StartTime
+	endTime := data.Timestamp.EndTime
 
 	buildHeartData := models.HeartSensorData{
-		TimeStamp: models.TimeStamp{
+		Timestamp: models.TimeStamp{
 			StartTime: startTime,
 			EndTime: endTime,
 		},

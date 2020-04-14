@@ -7,7 +7,7 @@ import (
 // structure of activity sensor data
 type ActivitySensorData struct {
 	ID bson.ObjectId `json:"_id,omitempty" bson:"_id,omitempty"`
-	TimeStamp
+	Timestamp TimeStamp `json:"timestamp,omitempty" bson:"timestamp,omitempty"`
 	Activity int `json:"activity,omitempty" bson:"activity,omitempty"`
 	Duration float32 `json:"duration,omitempty" bson:"duration,omitempty"`
 }
