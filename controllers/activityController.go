@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"encoding/base64"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -56,10 +57,17 @@ func CreateActivityData(c *gin.Context) {
 
 	c.BindJSON(&data)
 
+	// decode the data coming from the device
+	// decodedDuration, _ := base64.URLEncoding.DecodeString(data.Duration)
+	decodedActivity, _ := base64.URLEncoding.DecodeString(data.Activity)
+	decodedStartTime, _ := base64.URLEncoding.DecodeString(data.Timestamp.StartTime)
+	decodedEndTime, _ := base64.URLEncoding.DecodeString(data.Timestamp.EndTime)
+
+	// convert the decoded byte to a string
 	duration := data.Duration
-	activity := data.Activity
-	startTime := data.Timestamp.StartTime
-	endTime := data.Timestamp.EndTime
+	activity := string(decodedActivity)
+	startTime := string(decodedStartTime)
+	endTime := string(decodedEndTime)
 
 	buildActivityData := models.ActivitySensorData{
 		Timestamp: models.TimeStamp{
