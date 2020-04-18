@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"encoding/base64"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -55,10 +56,14 @@ func CreateCalorieData(c *gin.Context) {
 	// bind the data we get from the request as json
 	c.BindJSON(&data)
 
+	// decode the data being sent from the server
+	decodedStartTime, _ := base64.URLEncoding.DecodeString(data.Timestamp.StartTime)
+	decodedEndTime, _ := base64.URLEncoding.DecodeString(data.Timestamp.EndTime)
+
 	// get the data from the bind json
 	calories := data.Calories
-	startTime := data.Timestamp.StartTime
-	endTime := data.Timestamp.EndTime
+	startTime := string(decodedStartTime)
+	endTime := string(decodedEndTime)
 
 	buildCalorieData := models.CalorieSensorData{
 		Timestamp: models.TimeStamp{

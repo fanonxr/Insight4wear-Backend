@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"encoding/base64"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -53,9 +54,13 @@ func CreateStepData(c *gin.Context) {
 
 	c.BindJSON(&data)
 
+	// decode the data being sent from the server
+	decodedStartTime, _ := base64.URLEncoding.DecodeString(data.Timestamp.StartTime)
+	decodedEndTime, _ := base64.URLEncoding.DecodeString(data.Timestamp.EndTime)
+
 	stepCountDeleta := data.StepCountDelta
-	startTime := data.Timestamp.StartTime
-	endTime := data.Timestamp.EndTime
+	startTime := string(decodedStartTime)
+	endTime := string(decodedEndTime)
 
 	buildStepData := models.StepSensorData{
 		Timestamp: models.TimeStamp{
